@@ -22,7 +22,7 @@ module Money
     @rates = crossed_rates.to_h
   end
 
-  def new(amount, currency)
+  def self.new(amount, currency)
     raise UnknownCurrency unless @rates.include?(currency)
     Coin.new(amount, currency)
   end

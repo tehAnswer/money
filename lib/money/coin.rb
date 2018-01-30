@@ -20,7 +20,7 @@ module Money
     }.each do |opt_type, methods|
       methods.each do |operation|
         define_method operation do |coin|
-          send(opt_type, coin)
+          send(opt_type, coin, operation)
         end
       end
     end

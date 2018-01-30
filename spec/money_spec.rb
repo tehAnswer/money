@@ -12,4 +12,13 @@ RSpec.describe Money do
     it { expect(Money.rates['BTC']).to eq('EUR' => 100.00, 'USD' => 200.00)   }
     it { expect(Money.rates['USD']).to eq('EUR' => 0.5, 'BTC' => 0.005) }
   end
+
+  describe '#new' do
+    let(:coin) { Money::Coin.new(50.00, 'USD') }
+    subject    { Money.new(50, 'USD')          }
+
+    it { is_expected.to eq(coin)               }
+    it { expect(subject.amount).to eq(50.00)   }
+    it { expect(subject.currency).to eq('USD') }
+  end
 end
