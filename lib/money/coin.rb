@@ -9,8 +9,9 @@ module Money
 
     def convert_to(new_currency)
       return self if currency == new_currency
-      raise Money::UnknownCurrency unless @rates.include?(new_currency)
-      Coin.new(@amount * Money.rates.dig(currency, new_currency), new_currency)
+      rates = Money.rates[currency]
+      raise Money::UnknownCurrency unless rates.include?(new_currency)
+      Coin.new(@amount * rates[new_currency], new_currency)
     end
 
     {
@@ -20,7 +21,7 @@ module Money
     }.each do |opt_type, methods|
       methods.each do |operation|
         define_method operation do |coin|
-          send(opt_type, coin, operation)
+           send(opt_type, coin, operation)
         end
       end
     end
@@ -28,6 +29,7 @@ module Money
     private
 
     def arithmetics_operation(number, method)
+      raise Money::DivisionByZero if number == 0 && method == :/
       Coin.new(amount.send(method, number), currency)
     end
 

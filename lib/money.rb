@@ -4,6 +4,7 @@ require_relative 'money/coin'
 module Money
   UnknownCurrency = ArgumentError.new('Such currency does not exist.').freeze
   InvalidRates = ArgumentError.new('Rates need to have a numeric value associated.').freeze
+  DivisionByZero = ArgumentError.new('Divisions by zero are not allowed.').freeze
 
   def self.rates
     @rates || {}
