@@ -1,10 +1,11 @@
-require_relative 'money/version'
 require_relative 'money/coin'
 
 module Money
+  # TODO: Extract these errors into their own module as their number grows.
   UnknownCurrency = ArgumentError.new('Such currency does not exist.').freeze
   InvalidRates = ArgumentError.new('Rates need to have a numeric value associated.').freeze
   DivisionByZero = ArgumentError.new('Divisions by zero are not allowed.').freeze
+  InvalidAmount = ArgumentError.new('The amount to create a coin has to be a number').freeze
 
   def self.rates
     @rates || {}
@@ -23,6 +24,8 @@ module Money
     @rates = crossed_rates.to_h
   end
 
+  # NOTE: This can be misleading for the users of the gem, as they could expect
+  # the gem module (Money) to be a class.
   def self.new(amount, currency)
     raise UnknownCurrency unless @rates.include?(currency)
     Coin.new(amount, currency)

@@ -1,8 +1,12 @@
 module Money
+  # A coin represents an amount of a given money. This class defines methods to
+  # operate with such quantities of money, regardless if there are expressed in
+  # the same or different currency.
   class Coin
     attr_accessor :amount, :currency
 
     def initialize(amount, currency)
+      raise Money::InvalidAmount unless amount.respond_to?(:to_f)
       @amount = amount.to_f
       @currency = currency
     end
@@ -14,6 +18,11 @@ module Money
       Coin.new(@amount * rates[new_currency], new_currency)
     end
 
+    # NOTE: Too much magic happening here. Even though this black practises
+    # are discouraged in the community, the truth is that some times they become
+    # handy. I decided to use it because this code will hardly even change and
+    # allowed a really nice refactor. In other scenarios, my cup of tea is to go
+    # with methods defined statically.
     {
       arithmetics_operation:  [:/, :*],
       coin_operation:         [:+, :-],
